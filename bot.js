@@ -322,30 +322,6 @@ member.roles.add(rol)
 
 /////////////////////////////
 
-client.on("guildMemberAdd", async (member) => {
-  member.roles.add(ayarlar.unregister)
-  member.setNickname("★ İsim | Yaş")
-  });
-
-/////////////////////////////
-
-client.on('message', msg => {
-  if (msg.content.toLowerCase() === 'tag') {
-    msg.reply('★');
-  }
-});
-
-client.on('message', msg => {
-  if (msg.content.toLowerCase() === '.tag') {
-    msg.reply('★');
-  }
-});
-
-client.on('message', msg => {
-  if (msg.content.toLowerCase() === '!tag') {
-    msg.reply('★');
-  }
-});
 
 /////////////////////////////
 client.on("guildMemberAdd", member => {
