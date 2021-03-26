@@ -177,7 +177,177 @@ client.on("ready", () => {
   client.channels.cache.get(ayarlar.botses).join();
 }); 
 
+//-----------------------OTO-TAG-----------------------\\     STG
 
-client.on("guildMemberAdd", async member => {
-member.setNickname("★ İsim | Yaş")
+client.on("userUpdate", async (oldUser, newUser) => {
+  if (oldUser.username !== newUser.username) {
+    const tag = "★";
+    const sunucu = "823915527545552937";
+    const kanal = "823915531517165620";
+    const rol = "823915527801274456";
+
+    try {
+      if (
+        newUser.username.includes(tag) &&
+        !client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .roles.cache.has(rol)
+      ) {
+        await client.channels.cache
+          .get(kanal)
+          .send(
+            new Discord.MessageEmbed()
+              .setColor("GREEN")
+              .setDescription(
+                `<:tag:823959740651798609>  ${newUser} adlı kişi ${tag} Tagımızı Aldığı İçin <@&${rol}> Rolünü Verdim`
+              )
+          );
+        await client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .roles.add(rol);
+        await client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .send(
+            `<:tag:823959740651798609> Merhaba **${
+              newUser.username
+            }**, Sunucumuzda **${tag}** Tagımızı Aldığın İçin **${
+              client.guilds.cache.get(sunucu).roles.cache.get(rol).name
+            }** Rolünü Sana Verdim!`
+          );
+      }
+      if (
+        !newUser.username.includes(tag) &&
+        client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .roles.cache.has(rol)
+      ) {
+        await client.channels.cache
+          .get(kanal)
+          .send(
+            new Discord.MessageEmbed()
+              .setColor("d40000")
+              .setDescription(
+                `<:tag:823959740651798609> ${newUser} adlı kişi ${tag} Tagımızı Çıkardığı İçin <@&${rol}> Rolünü Aldım`
+              )
+          );
+        await client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .roles.remove(rol);
+        await client.guilds.cache
+          .get(sunucu)
+          .members.cache.get(newUser.id)
+          .send(
+            `<:tag:823959740651798609> Selam **${
+              newUser.username
+            }**, Sunucumuzda **${tag}** Tagımızı Çıkardığın İçin **${
+              client.guilds.cache.get(sunucu).roles.cache.get(rol).name
+            }** Rolünü Senden Aldım!`
+          );
+      }
+    } catch (e) {
+      console.log(`Bir hata oluştu! ${e}`);
+    }
+  }
+});
+
+//Serendia'dan alınıp V12 Çevirilmiştir!
+
+//-----------------------OTO-TAG-----------------------\\     STG
+
+client.on("userUpdate", async (stg, yeni) => {
+  var sunucu = client.guilds.cache.get("823915527545552937"); // Buraya Sunucu ID
+  var uye = sunucu.members.cache.get(yeni.id);
+  var tag = "★"; // Buraya Ekip Tag
+  var tagrol = "823915527801274456"; // Buraya Ekip Rolünün ID
+  var kanal = "823915531517165620"; // Loglanacağı Kanalın ID
+
+  if (
+    !sunucu.members.has(yeni.id) ||
+    yeni.bot ||
+    stg.username === yeni.username
+  )
+    return;
+
+  if (yeni.username.includes(tag) && !uye.roles.has(tagrol)) {
+    try {
+      await uye.roles.add(tagrol);
+      await uye.send(`Tagımızı aldığın için teşekkürler! Aramıza hoş geldin.`);
+      await client.channels.cache
+        .get(kanal)
+        .send(`${yeni} adlı üye tagımızı alarak aramıza katıldı!`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  if (!yeni.username.includes(tag) && uye.roles.has(tagrol)) {
+    try {
+      await uye.roles.remove(
+        uye.roles.filter(
+          rol => rol.position >= sunucu.roles.get(tagrol).position
+        )
+      );
+      await uye.send(
+        `Tagımızı bıraktığın için ekip rolü ve yetkili rollerin alındı! Tagımızı tekrar alıp aramıza katılmak istersen;\nTagımız: **${tag}**`
+      );
+      await client.channels.cache
+        .get(kanal)
+        .send(`**${yeni}** adlı üye tagımızı bırakarak aramızdan ayrıldı!`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+});
+
+//----------------------TAG-KONTROL----------------------\\     
+
+client.on("guildMemberAdd", member => {
+  let sunucuid = "823915527545552937"; //Buraya sunucunuzun IDsini yazın
+  let tag = "★"; //Buraya tagınızı yazın
+  let rol = "823915527801274456"; //Buraya tag alındığı zaman verilecek rolün IDsini yazın
+if(member.user.username.includes(tag)){
+member.roles.add(rol)
+  const tagalma = new Discord.MessageEmbed()
+      .setColor("GREEN")
+      .setDescription(`<@${member.id}> adlı kişi sunucumuza taglı şekilde katıldı, o doğuştan beri bizden !`)
+      .setTimestamp()
+     client.channels.cache.get('823915531517165620').send(tagalma)
+}
 })
+
+/////////////////////////////
+
+client.on("guildMemberAdd", async (member) => {
+  member.roles.add(ayarlar.unregister)
+  member.setNickname("★ İsim | Yaş")
+  });
+
+/////////////////////////////
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === 'tag') {
+    msg.reply('★');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === '.tag') {
+    msg.reply('★');
+  }
+});
+
+client.on('message', msg => {
+  if (msg.content.toLowerCase() === '!tag') {
+    msg.reply('★');
+  }
+});
+
+/////////////////////////////
+client.on("guildMemberAdd", member => {
+  member.roles.add('823915527772045400'); // UNREGİSTER ROLÜNÜN İDSİNİ GİRİN
+});
